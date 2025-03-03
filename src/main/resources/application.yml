@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/identity_db
+
+
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    baselineOnMigrate: true
+
+jwt:
+  secret: eW91ci1zZWNyZXQta2V5
+
+server:
+  port: 9000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  # exp�e todos os endpoints do Actuator (pode restringir se desejar)
+  endpoint:
+    health:
+      show-details: always  # mostra detalhes completos na sa�de da aplica��o
+  metrics:
+    export:
+      prometheus:
+        enabled: true
