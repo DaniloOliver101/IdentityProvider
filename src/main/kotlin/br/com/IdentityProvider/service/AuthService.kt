@@ -21,11 +21,9 @@ class AuthService(
 ) {
 
     fun authenticate(request: AuthRequest): String {
-        // Autentica as credenciais
         authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(request.username, request.password)
         )
-        // Carrega os detalhes do usuário
         val userDetails = userDetailsService.loadUserByUsername(request.username)
         // Retorna o token JWT gerado
         return jwtService.generateToken(userDetails)
@@ -42,5 +40,14 @@ class AuthService(
         enabled =  true)
         userRepository.save(user)
 
+    }
+    fun validateToken(token: String ): String {
+        val  userName =jwtService.extractUsername(token)
+        val userDetails = userDetailsService.loadUserByUsername(userName)
+        return if( jwtService.isTokenValid(token,userDetails)){
+            token
+        } else{
+            "Token inválido"
+        }
     }
 }

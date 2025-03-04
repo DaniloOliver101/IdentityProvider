@@ -1,6 +1,8 @@
 package br.com.IdentityProvider.controller
 
 import br.com.IdentityProvider.model.dto.AuthRequest
+import br.com.IdentityProvider.model.dto.AuthResponse
+import br.com.IdentityProvider.model.dto.Data
 import br.com.IdentityProvider.model.dto.RegisterRequest
 import br.com.IdentityProvider.service.AuthService
 import jakarta.validation.Valid
@@ -16,21 +18,19 @@ import org.springframework.web.bind.annotation.RestController
 class AuthController(private val authService: AuthService) {
 
     @PostMapping("/authenticate")
-    fun authenticate(@Valid @RequestBody request: AuthRequest): ResponseEntity<String> =
-        try {
-            val token = authService.authenticate(request)
-            ResponseEntity.ok(token)
-        } catch (ex: Exception) {
-            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.message)
-        }
+    fun authenticate(@Valid @RequestBody request: AuthRequest): ResponseEntity<AuthResponse> {
+
+        val token = authService.authenticate(request)
+        val authResponse = AuthResponse(Data(token))
+        return ResponseEntity.ok(authResponse)
+    }
 
     @PostMapping("/register")
-    fun register(@Valid @RequestBody request: RegisterRequest): ResponseEntity<String> =
-        try {
-            authService.register(request)
-            ResponseEntity.status(HttpStatus.CREATED).body("Usuário registrado com sucesso")
-        } catch (ex: Exception) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.message)
-        }
+    fun register(@Valid @RequestBody request: RegisterRequest): ResponseEntity<String> {
+        authService.register(request)
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuário registrado com sucesso")
+
+
+    }
 
 }

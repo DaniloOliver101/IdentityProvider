@@ -16,11 +16,15 @@ spring:
     baselineOnMigrate: true
 
 jwt:
-  secret: eW91ci1zZWNyZXQta2V5
+  secret: b/xhMwLwQeiY3ZiDrBCIG29pnGvmnZxwGCcLoFr5mbY=
 
 server:
   port: 9000
-
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 management:
   endpoints:
     web:

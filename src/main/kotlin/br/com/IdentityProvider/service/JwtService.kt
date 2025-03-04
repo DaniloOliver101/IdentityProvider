@@ -68,5 +68,15 @@ class JwtService {
             key
         }
     }
+    fun refreshToken(token: String): String {
+        val claims = extractAllClaims(token)
+        return Jwts.builder()
+            .setClaims(claims)
+            .setIssuedAt(Date(System.currentTimeMillis()))
+            .setExpiration(Date(System.currentTimeMillis() + 1000 * 60 * 5))
+            .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+            .compact()
+    }
+
 
 }
